@@ -1,7 +1,7 @@
-# Rule Engine with AST
+# Rule Engine with AST 
 
 ## Objective
-Develop a simple 3-tier rule engine application (Simple UI, API, and Backend, Data) to determine user eligibility based on attributes like age, department, income, spend, etc. The system can use Abstract Syntax Tree (AST) to represent conditional rules and allow for dynamic creation, combination, and modification of these rules.
+Develop a simple 3-tier rule engine application (Simple UI, API, and Backend, Data) to determine user eligibility based on attributes like age, department, income, spend, etc. The system utilizes an Abstract Syntax Tree (AST) to represent conditional rules, allowing for dynamic creation, combination, and modification of these rules.
 
 ## Data Structure
 Define a data structure to represent the AST. The structure should allow rule changes. One possible data structure could be a Node with the following fields:
@@ -20,7 +20,7 @@ Use MongoDB for storing the rules and application metadata. Define the schema wi
 ## API Design
 1. `create_rule(rule_string)`: This function takes a string representing a rule (as shown in the examples) and returns a Node object representing the corresponding AST.
 2. `combine_rules(rules)`: This function takes a list of rule strings and combines them into a single AST. It should consider efficiency and minimize redundant checks. The function should return the root node of the combined AST.
-3. `evaluate_rule(JSON data)`: This function takes a JSON representing the combined rule's AST and a dictionary data containing attributes (e.g., `data = {"age": 35, "department": "Sales", "salary": 60000, "experience": 3}`). The function should evaluate the rule against the provided data and return True if the user is of that cohort based on the rule, False otherwise.
+3. `evaluate_rule(JSON data)`: This function takes a JSON representing the combined rule's AST and a dictionary data containing attributes (e.g., `data = {"age": 35, "department": "Sales", "salary": 60000, "experience": 3}`). The function should evaluate the rule against the provided data and return True if the user meets the criteria based on the rule, False otherwise.
 
 ## Test Cases
 1. Create individual rules from the examples using `create_rule` and verify their AST representation.
@@ -28,9 +28,9 @@ Use MongoDB for storing the rules and application metadata. Define the schema wi
 3. Implement sample JSON data and test `evaluate_rule` for different scenarios.
 4. Explore combining additional rules and test the functionality.
 
-## Bonus
+## Bonus Features
 - Implement error handling for invalid rule strings or data formats (e.g., missing operators, invalid comparisons).
-- Implement validations for attributes to be part of a catalog.
+- Implement validations for attributes to ensure they are part of a catalog.
 - Allow for modification of existing rules using additional functionalities within `create_rule` or separate functions. This could involve changing operators, operand values, or adding/removing sub-expressions within the AST.
 - Consider extending the system to support user-defined functions within the rule language for advanced conditions (outside the scope of this exercise).
 
@@ -74,50 +74,43 @@ To clone the repository, follow these steps:
 2. Run the following command to clone the repository:
    ```sh
    git clone <repository_url>
-   ```
-3. Navigate to the project directory:
-   ```sh
-   cd <repository_directory>
-   ```
+Navigate to the project directory:
 
-## Installation and Setup
+cd <repository_directory>
+Installation and Setup
+Backend
+Navigate to the rule-engine directory.
+Install dependencies:
+sh
 
-### Backend
-1. Navigate to the `rule-engine` directory.
-2. Install dependencies:
-   ```sh
-   npm install
-   ```
-3. Create a `.env` file and add necessary environment variables, including your database URL:
-   ```plaintext
-   HORA_DATABASE=<your_database_url>
-   ```
-4. Start the backend server:
-   ```sh
-   npm start
-   ```
+npm install
+Create a .env file and add necessary environment variables, including your database URL:
+plaintext
 
-### Frontend
-1. Navigate to the `rule-engine-frontend` directory.
-2. Install dependencies:
-   ```sh
-   npm install
-   ```
-3. Start the frontend development server:
-   ```sh
-   npm run dev
-   ```
+MONGODB_URI=<your_database_url>
+Start the backend server:
+sh
 
-## Usage
-1. Open the frontend application in your browser.
-2. Use the UI to create, combine, and evaluate rules.
-3. The backend API will handle rule creation, combination, and evaluation.
+npm start
+Frontend
+Navigate to the rule-engine-frontend directory.
+Install dependencies:
+sh
 
-## API Key Formats
+npm install
+Start the frontend development server:
+sh
 
-### Evaluate Rule Key Format
+npm run dev
+Usage
+Open the frontend application in your browser.
+Use the UI to create, combine, and evaluate rules.
+The backend API will handle rule creation, combination, and evaluation.
+API Key Formats
+Evaluate Rule Key Format
 To evaluate a rule in Postman, use the following JSON format:
-```json
+
+
 {
   "ruleId": "66a27c89dca01ec0a644901e",
   "data": {
@@ -127,17 +120,15 @@ To evaluate a rule in Postman, use the following JSON format:
     "experience": 3
   }
 }
-```
-
-### Create Rule and Combine Rule Format
+Create Rule and Combine Rule Format
 To create or combine a rule in Postman, use the following JSON format:
-```json
+
+
 {
   "rule_string": "((age > 30 AND department = 'Sales') OR (age < 25 AND department = 'Marketing')) AND (salary > 50000 OR experience > 5)"
 }
-```
+Make sure to install node_modules in both the frontend and backend directories by running npm install in each respective directory.
 
-Make sure to install `node_modules` in both the frontend and backend directories by running `npm install` in each respective directory.
-```
 
-This README file now includes instructions to add the database URL in the `.env` file, along with the necessary steps for cloning the repository, setting up, and using the project.
+
+This updated README file includes more structured sections and necessary details for setup an
