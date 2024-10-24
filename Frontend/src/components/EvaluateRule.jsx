@@ -68,125 +68,79 @@ const ModernEvaluateRule = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 p-4">
-      <div className="max-w-2xl mx-auto mt-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-800 to-purple-800 p-4 flex items-center justify-center">
+      <div className="max-w-sm w-full bg-white rounded-lg shadow-lg p-6 mt-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-purple-400">
-            Rule Evaluator
-          </h1>
-          <p className="text-gray-400 mt-2">
-            Test your rules with different parameters
-          </p>
-        </div>
+        <h1 className="text-xl font-bold text-gray-800 text-center mb-2">Rule Evaluator</h1>
+        <p className="text-gray-600 text-center mb-4">Test your rules with different parameters</p>
 
         {/* Main Form */}
-        <div className="bg-slate-800 rounded p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Rule Selection */}
-            <div className="space-y-2">
-              <label className="text-white font-medium">
-                Select Rule
-              </label>
-              <select
-                value={selectedRule}
-                onChange={(e) => setSelectedRule(e.target.value)}
-                className="w-full bg-slate-700 rounded p-2.5 text-white border-none focus:ring-2 focus:ring-purple-500"
-              >
-                <option value="">Choose a rule...</option>
-                {sampleRules.map((rule) => (
-                  <option key={rule._id} value={rule._id}>
-                    {rule.ruleString}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Input Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-white font-medium">Age</label>
-                <input
-                  type="number"
-                  name="age"
-                  value={formData.age}
-                  onChange={handleInputChange}
-                  className="w-full bg-slate-700 rounded p-2.5 text-white border-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="Enter age"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-white font-medium">Salary</label>
-                <input
-                  type="number"
-                  name="salary"
-                  value={formData.salary}
-                  onChange={handleInputChange}
-                  className="w-full bg-slate-700 rounded p-2.5 text-white border-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="Enter salary"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-white font-medium">Department</label>
-                <input
-                  type="text"
-                  name="department"
-                  value={formData.department}
-                  onChange={handleInputChange}
-                  className="w-full bg-slate-700 rounded p-2.5 text-white border-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="Enter department"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-white font-medium">Experience</label>
-                <input
-                  type="number"
-                  name="experience"
-                  value={formData.experience}
-                  onChange={handleInputChange}
-                  className="w-full bg-slate-700 rounded p-2.5 text-white border-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="Years of experience"
-                />
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-purple-600 text-white py-2.5 rounded font-medium disabled:bg-purple-400 hover:bg-purple-700 transition-colors mt-6"
+        <form onSubmit={handleSubmit} className="space-y-3">
+          {/* Rule Selection */}
+          <div className="space-y-1">
+            <label className="text-gray-800 font-medium">Select Rule</label>
+            <select
+              value={selectedRule}
+              onChange={(e) => setSelectedRule(e.target.value)}
+              className="w-full bg-gray-200 rounded p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              {isLoading ? 'Evaluating...' : 'Evaluate Rule'}
-            </button>
-          </form>
-
-          {/* Messages */}
-          {error && (
-            <div className="mt-4 bg-red-900 p-3 rounded text-red-400">
-              {error}
-            </div>
-          )}
-          {response && (
-            <div className="mt-4 bg-green-900 p-3 rounded text-green-400">
-              {response.result ? 'You are eligible!' : 'You are not eligible.'}
-            </div>
-          )}
-
-          {/* Tips */}
-          <div className="mt-8 bg-slate-700 rounded p-4">
-            <h3 className="text-lg font-medium text-white mb-4">
-              Evaluation Tips
-            </h3>
-            <ul className="text-gray-400 space-y-2 text-sm">
-              <li>• Select a rule before entering parameters</li>
-              <li>• Ensure all required fields are filled</li>
-              <li>• Use appropriate number formats</li>
-              <li>• Double-check department spelling</li>
-            </ul>
+              <option value="">Choose a rule...</option>
+              {sampleRules.map((rule) => (
+                <option key={rule._id} value={rule._id}>
+                  {rule.ruleString}
+                </option>
+              ))}
+            </select>
           </div>
+
+          {/* Input Fields */}
+          <div className="grid grid-cols-1 gap-3">
+            {['age', 'salary', 'department', 'experience'].map((field) => (
+              <div key={field} className="space-y-1">
+                <label className="text-gray-800 font-medium capitalize">{field}</label>
+                <input
+                  type={field === 'department' ? 'text' : 'number'}
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleInputChange}
+                  className="w-full bg-gray-200 rounded p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  placeholder={`Enter ${field}`}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-indigo-600 text-white py-2 rounded font-medium disabled:bg-indigo-400 hover:bg-indigo-700 transition-colors"
+          >
+            {isLoading ? 'Evaluating...' : 'Evaluate Rule'}
+          </button>
+        </form>
+
+        {/* Messages */}
+        {error && (
+          <div className="mt-3 bg-red-500 p-2 rounded text-white text-center">
+            {error}
+          </div>
+        )}
+        {response && (
+          <div className="mt-3 bg-green-500 p-2 rounded text-white text-center">
+            {response.result ? 'You are eligible!' : 'You are not eligible.'}
+          </div>
+        )}
+
+        {/* Tips */}
+        <div className="mt-4 bg-gray-100 rounded p-3">
+          <h3 className="text-lg font-medium text-gray-800 mb-1">Evaluation Tips</h3>
+          <ul className="text-gray-600 space-y-1 text-sm">
+            <li>• Select a rule before entering parameters</li>
+            <li>• Ensure all required fields are filled</li>
+            <li>• Use appropriate number formats</li>
+            <li>• Double-check department spelling</li>
+          </ul>
         </div>
       </div>
     </div>

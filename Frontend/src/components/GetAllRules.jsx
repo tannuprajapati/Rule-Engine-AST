@@ -39,40 +39,34 @@ const GetAllRules = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-900 p-4">
-      <div className="max-w-4xl mx-auto mt-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-900 to-indigo-700 p-4 flex items-center justify-center">
+      <div className="max-w-3xl w-full bg-white rounded-lg shadow-xl p-6 mt-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-purple-400">
-            All Rules
-          </h1>
-          <p className="text-gray-400 mt-2">
-            View all rules in the system
-          </p>
-        </div>
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">All Rules</h1>
+        <p className="text-center text-gray-600 mb-6">View all rules in the system</p>
 
         {/* Rules Table */}
-        <div className="bg-slate-800 rounded-lg overflow-hidden">
+        <div className="bg-gray-50 rounded-lg overflow-hidden">
           {loading ? (
-            <p className="text-white text-center p-4">Loading rules...</p>
+            <p className="text-gray-700 text-center p-4">Loading rules...</p>
           ) : error ? (
-            <p className="text-red-400 text-center p-4">{error}</p>
+            <p className="text-red-600 text-center p-4">{error}</p>
           ) : rules.length === 0 ? (
-            <p className="text-gray-400 text-center p-4">No rules found</p>
+            <p className="text-gray-600 text-center p-4">No rules found</p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-slate-700">
-                <thead className="bg-slate-700">
+              <table className="min-w-full divide-y divide-gray-300">
+                <thead className="bg-gray-200">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-purple-400 uppercase tracking-wider">Rule ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-purple-400 uppercase tracking-wider">Rule String</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-blue-600 uppercase tracking-wider">Rule ID</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-blue-600 uppercase tracking-wider">Rule String</th>
                   </tr>
                 </thead>
-                <tbody className="bg-slate-800 divide-y divide-slate-700">
+                <tbody className="bg-white divide-y divide-gray-300">
                   {rules.map((rule) => (
-                    <tr key={rule._id} className="hover:bg-slate-700 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{rule._id}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{rule.ruleString}</td>
+                    <tr key={rule._id} className="hover:bg-gray-100 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{rule._id}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{rule.ruleString}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -82,11 +76,9 @@ const GetAllRules = () => {
         </div>
 
         {/* Tips */}
-        <div className="mt-8 bg-slate-700 rounded p-4">
-          <h3 className="text-lg font-medium text-white mb-4">
-            Understanding the Rules Table
-          </h3>
-          <ul className="text-gray-400 space-y-2 text-sm">
+        <div className="mt-8 bg-gray-100 rounded-lg p-4 shadow-md">
+          <h3 className="text-lg font-medium text-gray-800 mb-2">Understanding the Rules Table</h3>
+          <ul className="text-gray-600 space-y-1 text-sm">
             <li>• Each row represents a single rule in the system</li>
             <li>• The Rule ID is a unique identifier for each rule</li>
             <li>• The Rule String defines the conditions for the rule</li>

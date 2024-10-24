@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-const ModernRuleBuilder = () => {
+const LeftAlignedRuleBuilder = () => {
   const [ruleString, setRuleString] = useState('');
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [step, setStep] = useState(1);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,15 +13,16 @@ const ModernRuleBuilder = () => {
       setError('Please enter your rule first');
       return;
     }
-    
+
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setResponse({ success: true });
       setRuleString('');
+      setStep(3); // Move to the confirmation step
     } catch (err) {
       setError('Failed to save rule');
     } finally {
@@ -32,6 +34,7 @@ const ModernRuleBuilder = () => {
     setRuleString('');
     setError(null);
     setResponse(null);
+    setStep(1); // Reset to the first step
   };
 
   const handleCopy = () => {
@@ -39,96 +42,116 @@ const ModernRuleBuilder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 p-4">
-      <div className="max-w-2xl mx-auto mt-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-purple-400">
-            Rule Creator
-          </h1>
-          <p className="text-gray-400 mt-2">
-            Create your custom rules
-          </p>
-        </div>
+    <div className="h-screen bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center"> {/* Moderate gradient background */}
+      <div className="max-w-lg w-full bg-white shadow-2xl rounded-lg overflow-hidden">
+        <div className="p-6">
+          {/* Progress Steps */}
+          <div className="flex justify-between items-center mb-6">
+            <div className={`w-8 h-8 rounded-full ${step >= 1 ? 'bg-green-500' : 'bg-gray-300'} text-white flex items-center justify-center`}>1</div>
+            <div className={`flex-grow h-1 ${step >= 2 ? 'bg-green-500' : 'bg-gray-300'} mx-2`} />
+            <div className={`w-8 h-8 rounded-full ${step >= 2 ? 'bg-green-500' : 'bg-gray-300'} text-white flex items-center justify-center`}>2</div>
+            <div className={`flex-grow h-1 ${step >= 3 ? 'bg-green-500' : 'bg-gray-300'} mx-2`} />
+            <div className={`w-8 h-8 rounded-full ${step >= 3 ? 'bg-green-500' : 'bg-gray-300'} text-white flex items-center justify-center`}>3</div>
+          </div>
 
-        {/* Main Form */}
-        <div className="bg-slate-800 rounded p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Input Header */}
-            <div className="flex justify-between items-center">
-              <label className="text-white font-medium">
-                Rule Description
-              </label>
-              <div className="space-x-2">
+          {/* Step 1: Rule Input */}
+          {step === 1 && (
+            <>
+              <h2 className="text-2xl font-bold text-purple-700 mb-4">
+                Step 1: Describe Your Rule
+              </h2>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <textarea
+                  value={ruleString}
+                  onChange={(e) => setRuleString(e.target.value)}
+                  className="w-full h-32 border-2 border-purple-300 rounded p-3 text-gray-800 focus:ring-2 focus:ring-purple-500"
+                  placeholder="Type your rule here..."
+                  disabled={isLoading}
+                />
+                <div className="flex justify-between">
+                  <button
+                    type="button"
+                    onClick={handleClear}
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-colors"
+                  >
+                    Clear
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded transition-colors"
+                  >
+                    {isLoading ? 'Processing...' : 'Next'}
+                  </button>
+                </div>
+              </form>
+            </>
+          )}
+
+          {/* Step 2: Copy and Confirm */}
+          {step === 2 && (
+            <>
+              <h2 className="text-2xl font-bold text-purple-700 mb-4">
+                Step 2: Review and Copy
+              </h2>
+              <div className="bg-gray-100 p-4 rounded mb-4">
+                <p className="text-gray-700">{ruleString}</p>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopy}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors"
+              >
+                Copy to Clipboard
+              </button>
+              <div className="mt-6 flex justify-between">
                 <button
                   type="button"
-                  onClick={handleCopy}
-                  className="bg-slate-700 px-3 py-1 rounded text-white text-sm"
+                  onClick={() => setStep(1)}
+                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition-colors"
                 >
-                  Copy
+                  Back
                 </button>
                 <button
                   type="button"
-                  onClick={handleClear}
-                  className="bg-slate-700 px-3 py-1 rounded text-white text-sm"
+                  onClick={() => setStep(3)}
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition-colors"
                 >
-                  Clear
+                  Confirm
                 </button>
               </div>
-            </div>
+            </>
+          )}
 
-            {/* Textarea */}
-            <div className="relative">
-              <textarea
-                value={ruleString}
-                onChange={(e) => setRuleString(e.target.value)}
-                className="w-full h-40 bg-slate-700 rounded p-4 text-white resize-none"
-                placeholder="Type your rule here..."
-                disabled={isLoading}
-              />
-              <div className="absolute bottom-2 right-2 text-sm text-gray-400">
-                {ruleString.length} chars
-              </div>
-            </div>
+          {/* Step 3: Confirmation */}
+          {step === 3 && (
+            <>
+              <h2 className="text-2xl font-bold text-green-700 mb-4">
+                Step 3: Success!
+              </h2>
+              <p className="text-green-600">
+                Your rule has been successfully created and copied to the clipboard.
+              </p>
+              <button
+                type="button"
+                onClick={handleClear}
+                className="mt-6 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded transition-colors"
+              >
+                Create Another Rule
+              </button>
+            </>
+          )}
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-purple-600 text-white py-2 rounded font-medium disabled:bg-purple-400"
-            >
-              {isLoading ? 'Processing...' : 'Create Rule'}
-            </button>
-          </form>
-
-          {/* Messages */}
+          {/* Error Message */}
           {error && (
-            <div className="mt-4 bg-red-900 p-3 rounded text-red-400">
+            <div className="mt-4 bg-red-500 p-3 rounded text-white">
               {error}
             </div>
           )}
-          {response && (
-            <div className="mt-4 bg-green-900 p-3 rounded text-green-400">
-              Rule created successfully!
-            </div>
-          )}
-
-          {/* Tips */}
-          <div className="mt-8 bg-slate-700 rounded p-4">
-            <h3 className="text-lg font-medium text-white mb-4">
-              Tips
-            </h3>
-            <ul className="text-gray-400 space-y-2 text-sm">
-              <li>• Keep your rules clear and specific</li>
-              <li>• Include necessary conditions</li>
-              <li>• Use simple language</li>
-              <li>• Review before submitting</li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default ModernRuleBuilder;
+export default LeftAlignedRuleBuilder;
