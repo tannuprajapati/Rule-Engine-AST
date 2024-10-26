@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ModifyRule = () => {
+const ModernModifyRule = () => {
   const [ruleId, setRuleId] = useState('');
   const [newRuleString, setNewRuleString] = useState('');
   const [response, setResponse] = useState(null);
@@ -36,6 +36,8 @@ const ModifyRule = () => {
     try {
       const result = await simulateModifyRule(ruleId, newRuleString);
       setResponse(result);
+      setRuleId('');
+      setNewRuleString('');
     } catch (err) {
       setError('Failed to modify rule');
       setResponse(null);
@@ -44,74 +46,107 @@ const ModifyRule = () => {
     }
   };
 
+  const handleClear = () => {
+    setRuleId('');
+    setNewRuleString('');
+    setError(null);
+    setResponse(null);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-teal-800 to-blue-900 p-4 flex items-center justify-center">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 mt-8">
+    <div className="min-h-screen bg-slate-900 p-4">
+      <div className="max-w-2xl mx-auto mt-8">
         {/* Header */}
-        <h1 className="text-2xl font-bold text-center text-gray-800 mb-4">Modify Rule</h1>
-        <p className="text-center text-gray-600 mb-6">Change existing rules with updated parameters</p>
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-purple-400">
+            Modify Rule
+          </h1>
+          <p className="text-gray-400 mt-2">
+            Update existing rules with new parameters
+          </p>
+        </div>
 
-        {/* Main Form */}
-        <form onSubmit={handleModifyRule} className="space-y-4">
-          {/* Rule ID Input */}
-          <div className="space-y-2">
-            <label className="text-gray-800 font-medium">Rule ID</label>
-            <input
-              type="text"
-              value={ruleId}
-              onChange={(e) => setRuleId(e.target.value)}
-              className="w-full bg-gray-100 rounded-lg p-3 border border-gray-300 focus:ring-2 focus:ring-teal-500"
-              placeholder="Enter rule ID"
-            />
+        {/* Main Content */}
+        <div className="bg-slate-800 rounded p-6">
+          {/* Form Header */}
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-white font-medium">Rule Details</h2>
+            <button
+              type="button"
+              onClick={handleClear}
+              className="bg-slate-700 px-3 py-1 rounded text-white text-sm hover:bg-slate-600 transition-colors"
+            >
+              Clear Form
+            </button>
           </div>
 
-          {/* New Rule String Input */}
-          <div className="space-y-2">
-            <label className="text-gray-800 font-medium">New Rule String</label>
-            <textarea
-              value={newRuleString}
-              onChange={(e) => setNewRuleString(e.target.value)}
-              className="w-full bg-gray-100 rounded-lg p-3 border border-gray-300 focus:ring-2 focus:ring-teal-500"
-              placeholder="Enter new rule string"
-              rows="4"
-            />
-          </div>
+          {/* Main Form */}
+          <form onSubmit={handleModifyRule} className="space-y-6">
+            {/* Rule ID Input */}
+            <div className="space-y-2">
+              <label className="text-gray-300 font-medium block">
+                Rule ID
+              </label>
+              <input
+                type="text"
+                value={ruleId}
+                onChange={(e) => setRuleId(e.target.value)}
+                className="w-full bg-slate-700 rounded p-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                placeholder="Enter rule ID"
+              />
+            </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-teal-600 text-white py-2.5 rounded-lg font-medium disabled:bg-teal-400 hover:bg-teal-700 transition-colors mt-6"
-          >
-            {isLoading ? 'Modifying...' : 'Modify Rule'}
-          </button>
-        </form>
+            {/* New Rule String Input */}
+            <div className="space-y-2">
+              <label className="text-gray-300 font-medium block">
+                New Rule String
+              </label>
+              <textarea
+                value={newRuleString}
+                onChange={(e) => setNewRuleString(e.target.value)}
+                className="w-full bg-slate-700 rounded p-3 text-white resize-none h-32 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                placeholder="Enter new rule string"
+              />
+            </div>
 
-        {/* Messages */}
-        {error && (
-          <div className="mt-4 bg-red-900 p-3 rounded-lg text-red-400 text-center">
-            {error}
-          </div>
-        )}
-        {response && (
-          <div className="mt-4 bg-green-900 p-3 rounded-lg text-green-400 text-center">
-            Rule modified successfully!
-          </div>
-        )}
+            {/* Messages */}
+            {error && (
+              <div className="bg-red-900/20 border border-red-500/20 p-3 rounded text-red-400">
+                {error}
+              </div>
+            )}
+            {response && (
+              <div className="bg-green-900/20 border border-green-500/20 p-3 rounded text-green-400">
+                Rule modified successfully!
+              </div>
+            )}
 
-        {/* Tips */}
-        <div className="mt-6 bg-gray-100 rounded-lg p-4 shadow-md">
-          <h3 className="text-lg font-medium text-gray-800 mb-2">Modification Tips</h3>
-          <ul className="text-gray-600 space-y-1 text-sm">
-            <li>• Ensure the Rule ID is correct</li>
-            <li>• Double-check the new rule string syntax</li>
-            <li>• Use appropriate operators and conditions</li>
-            <li>• Test the modified rule after submission</li>
-          </ul>
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-purple-600 text-white py-2 rounded font-medium disabled:bg-purple-400 hover:bg-purple-700 transition-colors"
+            >
+              {isLoading ? 'Modifying...' : 'Modify Rule'}
+            </button>
+          </form>
+
+          {/* Tips */}
+          <div className="mt-8 bg-slate-700 rounded p-4">
+            <h3 className="text-lg font-medium text-white mb-4">
+              Modification Tips
+            </h3>
+            <ul className="text-gray-400 space-y-2 text-sm">
+              <li>• Ensure the Rule ID exists in the system</li>
+              <li>• Double-check the new rule string syntax</li>
+              <li>• Use appropriate operators and conditions</li>
+              <li>• Test the modified rule after submission</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default ModifyRule;
+export default ModernModifyRule;
