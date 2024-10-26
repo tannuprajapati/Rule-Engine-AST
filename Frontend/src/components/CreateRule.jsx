@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const LeftAlignedRuleBuilder = () => {
+const ModernRuleBuilder = () => {
   const [ruleString, setRuleString] = useState('');
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
@@ -21,7 +21,6 @@ const LeftAlignedRuleBuilder = () => {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setResponse({ success: true });
-      setRuleString('');
       setStep(3); // Move to the confirmation step
     } catch (err) {
       setError('Failed to save rule');
@@ -42,80 +41,89 @@ const LeftAlignedRuleBuilder = () => {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center"> {/* Moderate gradient background */}
-      <div className="max-w-lg w-full bg-white shadow-2xl rounded-lg overflow-hidden">
-        <div className="p-6">
+    <div className="min-h-screen bg-slate-900 p-4">
+      <div className="max-w-2xl mx-auto mt-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-purple-400">
+            Rule Builder
+          </h1>
+          <p className="text-gray-400 mt-2">
+            Create and manage your rules step by step
+          </p>
+        </div>
+
+        {/* Main Content */}
+        <div className="bg-slate-800 rounded p-6">
           {/* Progress Steps */}
           <div className="flex justify-between items-center mb-6">
-            <div className={`w-8 h-8 rounded-full ${step >= 1 ? 'bg-green-500' : 'bg-gray-300'} text-white flex items-center justify-center`}>1</div>
-            <div className={`flex-grow h-1 ${step >= 2 ? 'bg-green-500' : 'bg-gray-300'} mx-2`} />
-            <div className={`w-8 h-8 rounded-full ${step >= 2 ? 'bg-green-500' : 'bg-gray-300'} text-white flex items-center justify-center`}>2</div>
-            <div className={`flex-grow h-1 ${step >= 3 ? 'bg-green-500' : 'bg-gray-300'} mx-2`} />
-            <div className={`w-8 h-8 rounded-full ${step >= 3 ? 'bg-green-500' : 'bg-gray-300'} text-white flex items-center justify-center`}>3</div>
+            <div className={`w-8 h-8 rounded-full ${step >= 1 ? 'bg-purple-600' : 'bg-slate-700'} text-white flex items-center justify-center`}>1</div>
+            <div className={`flex-grow h-1 ${step >= 2 ? 'bg-purple-600' : 'bg-slate-700'} mx-2`} />
+            <div className={`w-8 h-8 rounded-full ${step >= 2 ? 'bg-purple-600' : 'bg-slate-700'} text-white flex items-center justify-center`}>2</div>
+            <div className={`flex-grow h-1 ${step >= 3 ? 'bg-purple-600' : 'bg-slate-700'} mx-2`} />
+            <div className={`w-8 h-8 rounded-full ${step >= 3 ? 'bg-purple-600' : 'bg-slate-700'} text-white flex items-center justify-center`}>3</div>
           </div>
 
           {/* Step 1: Rule Input */}
           {step === 1 && (
             <>
-              <h2 className="text-2xl font-bold text-purple-700 mb-4">
-                Step 1: Describe Your Rule
-              </h2>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-white font-medium">Step 1: Describe Your Rule</h2>
+                <div className="space-x-2">
+                  <button
+                    type="button"
+                    onClick={handleCopy}
+                    className="bg-slate-700 px-3 py-1 rounded text-white text-sm hover:bg-slate-600 transition-colors"
+                  >
+                    Copy
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleClear}
+                    className="bg-slate-700 px-3 py-1 rounded text-white text-sm hover:bg-slate-600 transition-colors"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </div>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <textarea
                   value={ruleString}
                   onChange={(e) => setRuleString(e.target.value)}
-                  className="w-full h-32 border-2 border-purple-300 rounded p-3 text-gray-800 focus:ring-2 focus:ring-purple-500"
+                  className="w-full h-40 bg-slate-700 rounded p-4 text-white resize-none focus:ring-2 focus:ring-purple-500 focus:outline-none"
                   placeholder="Type your rule here..."
                   disabled={isLoading}
                 />
-                <div className="flex justify-between">
-                  <button
-                    type="button"
-                    onClick={handleClear}
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-colors"
-                  >
-                    Clear
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded transition-colors"
-                  >
-                    {isLoading ? 'Processing...' : 'Next'}
-                  </button>
-                </div>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-purple-600 text-white py-2 rounded font-medium disabled:bg-purple-400 hover:bg-purple-700 transition-colors"
+                >
+                  {isLoading ? 'Processing...' : 'Next'}
+                </button>
               </form>
             </>
           )}
 
-          {/* Step 2: Copy and Confirm */}
+          {/* Step 2: Review */}
           {step === 2 && (
             <>
-              <h2 className="text-2xl font-bold text-purple-700 mb-4">
-                Step 2: Review and Copy
-              </h2>
-              <div className="bg-gray-100 p-4 rounded mb-4">
-                <p className="text-gray-700">{ruleString}</p>
+              <h2 className="text-white font-medium mb-4">Step 2: Review and Copy</h2>
+              <div className="bg-slate-700 p-4 rounded mb-4">
+                <p className="text-gray-300">{ruleString}</p>
               </div>
-              <button
-                type="button"
-                onClick={handleCopy}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors"
-              >
-                Copy to Clipboard
-              </button>
-              <div className="mt-6 flex justify-between">
+              <div className="flex justify-between gap-4">
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition-colors"
+                  className="flex-1 bg-slate-700 text-white py-2 rounded font-medium hover:bg-slate-600 transition-colors"
                 >
                   Back
                 </button>
                 <button
                   type="button"
                   onClick={() => setStep(3)}
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition-colors"
+                  className="flex-1 bg-purple-600 text-white py-2 rounded font-medium hover:bg-purple-700 transition-colors"
                 >
                   Confirm
                 </button>
@@ -123,19 +131,19 @@ const LeftAlignedRuleBuilder = () => {
             </>
           )}
 
-          {/* Step 3: Confirmation */}
+          {/* Step 3: Success */}
           {step === 3 && (
             <>
-              <h2 className="text-2xl font-bold text-green-700 mb-4">
-                Step 3: Success!
-              </h2>
-              <p className="text-green-600">
-                Your rule has been successfully created and copied to the clipboard.
-              </p>
+              <h2 className="text-white font-medium mb-4">Step 3: Success!</h2>
+              <div className="bg-green-900/20 border border-green-500/20 p-4 rounded mb-6">
+                <p className="text-green-400">
+                  Your rule has been successfully created and saved.
+                </p>
+              </div>
               <button
                 type="button"
                 onClick={handleClear}
-                className="mt-6 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded transition-colors"
+                className="w-full bg-purple-600 text-white py-2 rounded font-medium hover:bg-purple-700 transition-colors"
               >
                 Create Another Rule
               </button>
@@ -144,14 +152,27 @@ const LeftAlignedRuleBuilder = () => {
 
           {/* Error Message */}
           {error && (
-            <div className="mt-4 bg-red-500 p-3 rounded text-white">
+            <div className="mt-4 bg-red-900/20 border border-red-500/20 p-3 rounded text-red-400">
               {error}
             </div>
           )}
+
+          {/* Tips */}
+          <div className="mt-8 bg-slate-700 rounded p-4">
+            <h3 className="text-lg font-medium text-white mb-4">
+              Tips for Creating Rules
+            </h3>
+            <ul className="text-gray-400 space-y-2 text-sm">
+              <li>• Use clear and concise language</li>
+              <li>• Follow the correct rule syntax</li>
+              <li>• Review carefully before confirming</li>
+              <li>• Make sure rules are complete</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default LeftAlignedRuleBuilder;
+export default ModernRuleBuilder;
